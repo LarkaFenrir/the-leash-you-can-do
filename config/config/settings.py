@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'bookings.apps.BookingsConfig',
     'courses.apps.CoursesConfig',
     'pets.apps.PetsConfig',
-    'users.apps.UsersConfig'
+    'user.apps.UserConfig'
 ]
 
 MIDDLEWARE = [
