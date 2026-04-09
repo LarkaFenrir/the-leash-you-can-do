@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models import Q, CheckConstraint
 
 # Create your models here.
 
@@ -39,6 +40,18 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Shelter Member'
         verbose_name_plural = 'Shelter Members'
+
+        # database level validation to prevent empty strings
+        constraints = [
+            CheckConstraint(
+                condition=~Q(first_name=''),
+                name='first_name_not_empty'
+            ),
+            CheckConstraint(
+                condition=~Q(last_name=''),
+                name='last_name_not_empty'
+            )
+        ]
 
     def __str__(self):
         return f'{self.get_full_name()} ({self.email})'
