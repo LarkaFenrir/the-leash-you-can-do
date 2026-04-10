@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Q, CheckConstraint
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -55,3 +56,15 @@ class User(AbstractUser):
 
     def __str__(self):
         return f'{self.get_full_name()} ({self.email})'
+
+    def clean(self):
+        '''Catches complex invalid input like "   ".'''
+        super().clean()
+        if self.first_name is not None and self.first_name.strip() == '':
+            raise ValidationError(
+                {'first_name': 'First name cannot be empty or just spaces.'}
+            )
+        if self.last_name is not None and self.last_name.strip() == '':
+            raise ValidationError(
+                {'last_name': 'Last name cannot be empty or just spaces.'}
+            )
